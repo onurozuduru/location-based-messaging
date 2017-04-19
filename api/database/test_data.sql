@@ -1,0 +1,13 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+INSERT INTO "users" VALUES(1,'example0','example0p');
+INSERT INTO "users" VALUES(2,'example1','example1p');
+INSERT INTO "messages" VALUES(1,2,'test1',NULL,1.0,2.2);
+INSERT INTO "messages" VALUES(2,2,'test2',NULL,2.0,1.0);
+INSERT INTO "messages" VALUES(3,2,'test2',NULL,5.0,1.0);
+INSERT INTO "messages" VALUES(4,2,'test2',NULL,5.0,5.0);
+INSERT INTO "messages" VALUES(5,2,'test2',NULL,1.0,5.0);
+INSERT INTO "messages" VALUES(6,2,'test2',NULL,1.0,3.0);
+INSERT INTO "messages" VALUES(7,2,'test2',NULL,-1.0,3.0);
+INSERT INTO "messages" VALUES(8,2,'test2',NULL,-5.0,3.0);
+COMMIT;

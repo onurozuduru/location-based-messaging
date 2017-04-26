@@ -42,3 +42,14 @@ An example output might be like:
 | POST | /api/users | adds new user **(if username already exits, returns `400`)**, body form is like: `{"username":<string:username>, "password":<string:password>}` |
 | POST | /login | `{"username":<string:username>, "password":<string:password>}` |
 | GET | /logout | logs out |
+
+
+### How to Login
+
+To login the system it is needed to send POST request to `http://localhost:5000/login` URL.
+An example request body is shown below.
+
+
+```python
+    {"username":"example1", "password":"example1p"}
+```

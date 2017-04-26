@@ -1,3 +1,5 @@
+import datetime
+import random
 from flask import abort
 from flask import json
 from flask import request
@@ -22,6 +24,30 @@ is_unq = Users.query.filter_by(username='example1').all()
 if len(is_unq) == 0:
     user2 = Users(username='example1', password='example1p')
     db.session.add(user2)
+    db.session.commit()
+is_unq = Messages.query.filter_by(sender=1).all()
+if len(is_unq) == 0:
+    # Range limits for the coordinates, it will generate it based on these limits.
+    lat_limits = (64.5, 66.0)
+    lon_limits = (24.5,26.0)
+    for i in range(5):
+        msg = Messages(sender=1, message="sender1 test msg " + str(i),
+                       timestamp=datetime.datetime.now(),
+                       latitude=random.uniform(lat_limits[0], lat_limits[1]),
+                       longitude=random.uniform(lon_limits[0], lon_limits[1]))
+        db.session.add(msg)
+    db.session.commit()
+is_unq = Messages.query.filter_by(sender=2).all()
+if len(is_unq) == 0:
+    # Range limits for the coordinates, it will generate it based on these limits.
+    lat_limits = (64.5, 66.0)
+    lon_limits = (24.5,26.0)
+    for i in range(5):
+        msg = Messages(sender=2, message="sender2 test msg " + str(i),
+                       timestamp=datetime.datetime.now(),
+                       latitude=random.uniform(lat_limits[0], lat_limits[1]),
+                       longitude=random.uniform(lon_limits[0], lon_limits[1]))
+        db.session.add(msg)
     db.session.commit()
 #### END_OF Example user ####
 

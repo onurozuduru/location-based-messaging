@@ -44,3 +44,17 @@ def message_location_filter(search_params=None, **kw):
         search_params['filters'] = []
     # Append filter to the list of filters.
     search_params['filters'].append(filt)
+
+def messages_found_user_filter(search_params=None, **kw):
+    # This checks if the preprocessor function is being called before a
+    # request that does not have search parameters.
+    if search_params is None:
+        return
+    if "user_id" not in search_params:
+        return
+    filt = {"name": "user_id", "op": "eq", "val": int(search_params['user_id'])}
+    # Check if there are any filters there already.
+    if 'filters' not in search_params:
+        search_params['filters'] = []
+    # Append filter to the list of filters.
+    search_params['filters'].append(filt)

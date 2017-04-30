@@ -8,7 +8,7 @@ from flask_login import login_user, logout_user
 from processors import *
 from config import app, db, login_manager, manager
 
-from models import Users, Messages
+from models import Users, Messages, MessagesFound
 
 # Create the database tables.
 db.create_all()
@@ -47,6 +47,19 @@ if len(is_unq) == 0:
                        timestamp=datetime.datetime.now(),
                        latitude=random.uniform(lat_limits[0], lat_limits[1]),
                        longitude=random.uniform(lon_limits[0], lon_limits[1]))
+        db.session.add(msg)
+    db.session.commit()
+
+is_unq = MessagesFound.query.filter_by(user_id=1).all()
+if len(is_unq) == 0:
+    for i in range(3):
+        msg = MessagesFound(user_id=1, message_id=i+1)
+        db.session.add(msg)
+    db.session.commit()
+is_unq = MessagesFound.query.filter_by(user_id=2).all()
+if len(is_unq) == 0:
+    for i in range(3):
+        msg = MessagesFound(user_id=2, message_id=5+i+1)
         db.session.add(msg)
     db.session.commit()
 #### END_OF Example user ####
@@ -101,15 +114,15 @@ def logout():
 #### END_OF Routes ####
 
 # Set processors
-preprocessors_user = dict(GET_SINGLE=[user_auth_func],
-                          GET_MANY=[user_auth_func])
-preprocessors_message = dict(GET_SINGLE=[auth_func],
-                             GET_MANY=[auth_func, message_location_filter],
-                             POST=[auth_func, message_post])
+# preprocessors_user = dict(GET_SINGLE=[user_auth_func],
+#                           GET_MANY=[user_auth_func])
+preprocessors_message = dict(GET_MANY=[message_location_filter])
+preprocessors_messages_found = dict(GET_MANY=[messages_found_user_filter])
 
 # Create endpoints
-manager.create_api(Users, exclude_columns=['password'], methods=['GET', 'POST'], preprocessors=preprocessors_user)
+manager.create_api(Users, exclude_columns=['password'], methods=['GET', 'POST'])
 manager.create_api(Messages, methods=['GET', 'POST'], preprocessors=preprocessors_message)
+manager.create_api(MessagesFound, methods=['GET'], preprocessors=preprocessors_messages_found)
 
 # Run api loop
 app.run()

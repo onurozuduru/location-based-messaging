@@ -42,9 +42,12 @@ An example output might be like:
 | POST | /api/users | adds new user **(if username already exits, returns `400`)**, body form is like: `{"username":<string:username>, "password":<string:password>}` |
 | POST | /login | `{"username":<string:username>, "password":<string:password>}` |
 | GET | /logout | logs out |
-
+| GET | /api/messages_found?q={"user_id":<int:user_id>} | returns messages that found |
+| GET | /api/messages_found/<int:id> | returns row of given `id` |  
 
 ### How to Login
+
+**LOGIN IS DISABLED IN THIS VERSION, END POINT STILL WORKS BUT EVERYTHING CAN BE ACCESSED WITHOUT LOGIN!**
 
 To login the system it is needed to send POST request to `http://localhost:5000/login` URL.
 An example request body is shown below.

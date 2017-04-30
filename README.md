@@ -35,15 +35,15 @@ An example output might be like:
 
 | Method | End Point | Explanation |
 | ------ | --------- | ----------- |
-| GET | /api/messages?q={"lat":<float:latitude>, "long":<float:longitude>} | returns all messages close to that location |
-| GET | /api/messages/<int:messageid> | returns message of given `messageid`  |
-| POST | /api/messages | adds new message **(sender must be the current user)**, body form is like: `{"sender":<int:senderid>, "message": <string:message>, "latitude":<float:latitude>, "longitude":<float:longitude>}` |
-| GET | /api/users/<int:userid> | returns the user of given `userid` |
-| POST | /api/users | adds new user **(if username already exits, returns `400`)**, body form is like: `{"username":<string:username>, "password":<string:password>}` |
-| POST | /login | `{"username":<string:username>, "password":<string:password>}` |
-| GET | /logout | logs out |
-| GET | /api/messages_found?q={"user_id":<int:user_id>} | returns messages that found |
-| GET | /api/messages_found/<int:id> | returns row of given `id` |  
+| GET | `/api/messages?q={"lat":<float:latitude>, "long":<float:longitude>}` | returns all messages close to that location |
+| GET | `/api/messages/<int:messageid>` | returns message of given `messageid`  |
+| POST | `/api/messages` | adds new message **(sender must be the current user)**, body form is like: `{"sender":<int:senderid>, "message": <string:message>, "latitude":<float:latitude>, "longitude":<float:longitude>}` |
+| GET | `/api/users/<int:userid>` | returns the user of given `userid` |
+| POST | `/api/users` | adds new user **(if username already exits, returns `400`)**, body form is like: `{"username":<string:username>, "password":<string:password>}` |
+| POST | `/login` | `{"username":<string:username>, "password":<string:password>}` |
+| GET | `/logout` | logs out |
+| GET | `/api/messages_found?q={"user_id":<int:user_id>}` | returns messages that found |
+| GET | `/api/messages_found/<int:id>` | returns row of given `id` |  
 
 ### How to Login
 

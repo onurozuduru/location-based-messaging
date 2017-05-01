@@ -31,7 +31,7 @@ if len(is_unq) == 0:
     lat_limits = (64.5, 66.0)
     lon_limits = (24.5,26.0)
     for i in range(5):
-        msg = Messages(sender=1, message="sender1 test msg " + str(i),
+        msg = Messages(sender=1, sendername='example0', message="sender1 test msg " + str(i),
                        timestamp=datetime.datetime.now(),
                        latitude=random.uniform(lat_limits[0], lat_limits[1]),
                        longitude=random.uniform(lon_limits[0], lon_limits[1]))
@@ -43,7 +43,7 @@ if len(is_unq) == 0:
     lat_limits = (64.5, 66.0)
     lon_limits = (24.5,26.0)
     for i in range(5):
-        msg = Messages(sender=2, message="sender2 test msg " + str(i),
+        msg = Messages(sender=2, sendername='example1', message="sender2 test msg " + str(i),
                        timestamp=datetime.datetime.now(),
                        latitude=random.uniform(lat_limits[0], lat_limits[1]),
                        longitude=random.uniform(lon_limits[0], lon_limits[1]))

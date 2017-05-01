@@ -19,6 +19,7 @@ class Users(db.Model, UserMixin):
 class Messages(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sender = db.Column(db.Integer, db.ForeignKey('users.id'))
+    sendername = db.Column(db.String(), db.ForeignKey('users.username'))
     message = db.Column(db.String())
     timestamp = db.Column(db.DateTime)
     latitude = db.Column(db.Float)

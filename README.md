@@ -37,7 +37,8 @@ An example output might be like:
 | ------ | --------- | ----------- |
 | GET | `/api/messages?q={"lat":<float:latitude>, "long":<float:longitude>}` | returns all messages close to that location |
 | GET | `/api/messages/<int:messageid>` | returns message of given `messageid`  |
-| POST | `/api/messages` | adds new message **(sender must be the current user)**, body form is like: `{"sender":<int:senderid>, "message": <string:message>, "latitude":<float:latitude>, "longitude":<float:longitude>}` |
+| GET | `/api/messages?page=<int:pagenumber>` | returns the given page. |
+| POST | `/api/messages` | adds new message **(sender must be the current user)**, body form is like: `{"sender":<int:senderid>, "sendername":<string:sendername>, "message": <string:message>, "latitude":<float:latitude>, "longitude":<float:longitude>}` |
 | GET | `/api/users/<int:userid>` | returns the user of given `userid` |
 | POST | `/api/users` | adds new user **(if username already exits, returns `400`)**, body form is like: `{"username":<string:username>, "password":<string:password>}` |
 | POST | `/login` | `{"username":<string:username>, "password":<string:password>}` |
@@ -55,4 +56,21 @@ An example request body is shown below.
 
 ```python
     {"username":"example1", "password":"example1p"}
+```
+
+### Example POST Message
+
+Request header's `Content-Type` for the POST must be `application/json`.
+
+There is an example POST request for creating new message. 
+
+**Sendername and senderid must be matching!**
+
+```json
+    {"latitude": 67.0, 
+    "longitude": 24.0, 
+    "message": "post test", 
+    "sender": 1, 
+    "sendername": "example0", 
+    "timestamp": "2017-05-02 18:55"}
 ```

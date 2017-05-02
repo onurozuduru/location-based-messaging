@@ -121,8 +121,10 @@ preprocessors_messages_found = dict(GET_MANY=[messages_found_user_filter])
 
 # Create endpoints
 manager.create_api(Users, exclude_columns=['password'], methods=['GET', 'POST'])
-manager.create_api(Messages, methods=['GET', 'POST'], preprocessors=preprocessors_message)
-manager.create_api(MessagesFound, methods=['GET', 'POST'], preprocessors=preprocessors_messages_found, exclude_columns=['user.password'])
+manager.create_api(Messages, methods=['GET', 'POST'], preprocessors=preprocessors_message, results_per_page=20)
+manager.create_api(MessagesFound, methods=['GET', 'POST'],
+                   preprocessors=preprocessors_messages_found, exclude_columns=['user.password'],
+                   results_per_page=20)
 
 # Run api loop
 app.run()

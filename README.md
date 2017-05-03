@@ -48,8 +48,6 @@ An example output might be like:
 
 ### How to Login
 
-**LOGIN IS DISABLED IN THIS VERSION, END POINT STILL WORKS BUT EVERYTHING CAN BE ACCESSED WITHOUT LOGIN!**
-
 To login the system it is needed to send POST request to `http://localhost:5000/login` URL.
 An example request body is shown below.
 

@@ -14,7 +14,8 @@ from models import Users, Messages, MessagesFound
 db.create_all()
 
 #### Example user ####
-# TODO remove this
+## Populate the DB
+
 is_unq = Users.query.filter_by(username='example0').all()
 if len(is_unq) == 0:
     user1 = Users(username='example0', password='example0p')
@@ -114,17 +115,23 @@ def logout():
 #### END_OF Routes ####
 
 # Set processors
-# preprocessors_user = dict(GET_SINGLE=[user_auth_func],
-#                           GET_MANY=[user_auth_func])
-preprocessors_message = dict(GET_MANY=[message_location_filter])
-preprocessors_messages_found = dict(GET_MANY=[messages_found_user_filter])
+preprocessors_user = dict(GET_SINGLE=[user_auth_func],
+                          GET_MANY=[user_auth_func])
+preprocessors_message = dict(GET_SINGLE=[auth_func],
+                             GET_MANY=[auth_func, message_location_filter],
+                             POST=[auth_func, message_post])
+preprocessors_messages_found = dict(GET_SINGLE=[auth_func],
+                                    GET_MANY=[auth_func, messages_found_user_filter],
+                                    POST=[auth_func])
 
 # Create endpoints
-manager.create_api(Users, exclude_columns=['password'], methods=['GET', 'POST'])
-manager.create_api(Messages, methods=['GET', 'POST'], preprocessors=preprocessors_message, results_per_page=20)
+manager.create_api(Users, exclude_columns=['password'],
+                   methods=['GET', 'POST'], preprocessors=preprocessors_user)
+manager.create_api(Messages, methods=['GET', 'POST'],
+                   preprocessors=preprocessors_message, results_per_page=20)
 manager.create_api(MessagesFound, methods=['GET', 'POST'],
-                   preprocessors=preprocessors_messages_found, exclude_columns=['user.password'],
-                   results_per_page=20)
+                   preprocessors=preprocessors_messages_found,
+                   exclude_columns=['user.password'], results_per_page=20)
 
 # Run api loop
 app.run()

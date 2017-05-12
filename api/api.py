@@ -8,13 +8,14 @@ from flask_login import login_user, logout_user
 from processors import *
 from config import app, db, login_manager, manager
 
-from models import Users, Messages
+from models import Users, Messages, MessagesFound
 
 # Create the database tables.
 db.create_all()
 
 #### Example user ####
-# TODO remove this
+## Populate the DB
+
 is_unq = Users.query.filter_by(username='example0').all()
 if len(is_unq) == 0:
     user1 = Users(username='example0', password='example0p')
@@ -31,7 +32,7 @@ if len(is_unq) == 0:
     lat_limits = (64.5, 66.0)
     lon_limits = (24.5,26.0)
     for i in range(5):
-        msg = Messages(sender=1, message="sender1 test msg " + str(i),
+        msg = Messages(sender=1, sendername='example0', message="sender1 test msg " + str(i),
                        timestamp=datetime.datetime.now(),
                        latitude=random.uniform(lat_limits[0], lat_limits[1]),
                        longitude=random.uniform(lon_limits[0], lon_limits[1]))
@@ -43,10 +44,23 @@ if len(is_unq) == 0:
     lat_limits = (64.5, 66.0)
     lon_limits = (24.5,26.0)
     for i in range(5):
-        msg = Messages(sender=2, message="sender2 test msg " + str(i),
+        msg = Messages(sender=2, sendername='example1', message="sender2 test msg " + str(i),
                        timestamp=datetime.datetime.now(),
                        latitude=random.uniform(lat_limits[0], lat_limits[1]),
                        longitude=random.uniform(lon_limits[0], lon_limits[1]))
+        db.session.add(msg)
+    db.session.commit()
+
+is_unq = MessagesFound.query.filter_by(user_id=1).all()
+if len(is_unq) == 0:
+    for i in range(3):
+        msg = MessagesFound(user_id=1, message_id=i+1)
+        db.session.add(msg)
+    db.session.commit()
+is_unq = MessagesFound.query.filter_by(user_id=2).all()
+if len(is_unq) == 0:
+    for i in range(3):
+        msg = MessagesFound(user_id=2, message_id=5+i+1)
         db.session.add(msg)
     db.session.commit()
 #### END_OF Example user ####
@@ -106,10 +120,18 @@ preprocessors_user = dict(GET_SINGLE=[user_auth_func],
 preprocessors_message = dict(GET_SINGLE=[auth_func],
                              GET_MANY=[auth_func, message_location_filter],
                              POST=[auth_func, message_post])
+preprocessors_messages_found = dict(GET_SINGLE=[auth_func],
+                                    GET_MANY=[auth_func, messages_found_user_filter],
+                                    POST=[auth_func])
 
 # Create endpoints
-manager.create_api(Users, exclude_columns=['password'], methods=['GET', 'POST'], preprocessors=preprocessors_user)
-manager.create_api(Messages, methods=['GET', 'POST'], preprocessors=preprocessors_message)
+manager.create_api(Users, exclude_columns=['password'],
+                   methods=['GET', 'POST'], preprocessors=preprocessors_user)
+manager.create_api(Messages, methods=['GET', 'POST'],
+                   preprocessors=preprocessors_message, results_per_page=20)
+manager.create_api(MessagesFound, methods=['GET', 'POST'],
+                   preprocessors=preprocessors_messages_found,
+                   exclude_columns=['user.password'], results_per_page=20)
 
 # Run api loop
 app.run()
